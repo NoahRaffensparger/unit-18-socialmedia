@@ -56,7 +56,7 @@ module.exports = {
       const { thoughtText, username, userId } = req.body;
   
       const thought = await Thought.create({ thoughtText, username });
-
+  
       await User.findByIdAndUpdate(
         userId,
         { $push: { thoughts: thought._id } },
@@ -69,8 +69,7 @@ module.exports = {
       res.status(500).json({ message: 'Server error', error: err });
     }
   },
-  
-  // Delete a thought and remove it from the user
+
   async deleteThought(req, res) {
     try {
       const thought = await Thought.findByIdAndDelete({ _id: req.params.thoughtId });
@@ -143,7 +142,7 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
         { runValidators: true, new: true }
       );
 
